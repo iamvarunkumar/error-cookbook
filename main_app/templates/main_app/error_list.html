@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ list_title|default:"Errors" }} - Error Cookbook{% endblock title %}
+
+{% block content %}
+<h1 class="mb-4">{{ list_title|default:"Error Entries" }}</h1>
+
+{% if error_entries %}
+    <div class="list-group shadow-sm">
+        {% for error in error_entries %}
+            <a href="{{ error.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ error.title }}</h5>
+                    <small class="text-muted">{{ error.updated_at|date:"M d, Y" }}</small>
+                </div>
+                {% if error.error_code %}
+                    <p class="mb-1"><small class="text-body-secondary">Code: {{ error.error_code }}</small></p>
+                {% endif %}
+                <p class="mb-1">{{ error.description|truncatewords:30 }}</p>
+                {% if error.category %}
+                    <span class="badge bg-primary rounded-pill">{{ error.category.name }}</span>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        No errors found matching your criteria.
+        {% if current_category %}
+            Perhaps try viewing <a href="{% url 'cookbook:error_list' %}" class="alert-link">all errors</a>?
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock content %}

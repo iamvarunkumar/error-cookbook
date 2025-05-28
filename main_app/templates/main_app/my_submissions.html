@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ list_title|default:"My Submissions" }} - Error Cookbook{% endblock title %}
+
+{% block content %}
+<h1 class="mb-4 section-title-glass">{{ list_title|default:"My Submitted Errors" }}</h1>
+
+{% if user_submissions %}
+    <div class="list-group shadow-sm">
+        {% for error in user_submissions %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start glass-list-item mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <a href="{{ error.get_absolute_url }}" class="text-decoration-none">
+                        <h5 class="mb-1 list-item-title-glass">{{ error.title }}</h5>
+                    </a>
+                    <span>
+                        {% if error.status == error.STATUS_APPROVED and error.is_public %}
+                            <span class="badge bg-success-glass">Approved & Public</span>
+                        {% elif error.status == error.STATUS_APPROVED %}
+                            <span class="badge bg-info-glass">Approved (Not Public)</span>
+                        {% elif error.status == error.STATUS_PENDING %}
+                            <span class="badge bg-warning-glass text-dark">Pending Review</span>
+                        {% elif error.status == error.STATUS_REJECTED %}
+                            <span class="badge bg-danger-glass">Rejected</span>
+                        {% endif %}
+                    </span>
+                </div>
+                {% if error.error_code %}
+                    <p class="mb-1"><small class="text-muted-glass">Code: {{ error.error_code }}</small></p>
+                {% endif %}
+                <p class="mb-1 text-muted-glass">{{ error.description|truncatewords:25 }}</p>
+                <small class="text-muted-glass">Submitted: {{ error.created_at|date:"M d, Y" }} | Last Updated: {{ error.updated_at|timesince }} ago</small>
+                {# Add edit link later if status is pending #}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info glass-alert" role="alert">
+        You haven't submitted any errors yet.
+        <a href="{% url 'main_app:submit_error' %}" class="alert-link fw-bold">Why not submit one now?</a>
+    </div>
+{% endif %}
+{% endblock content %}

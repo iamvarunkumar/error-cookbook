@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ error_entry.title }} - Error Cookbook{% endblock title %}
+
+{% block content %}
+<article class="mb-4">
+    {# Main Error Info Header Section with Bookmark Button #}
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-glass-light shadow-sm glass-card-effect">
+        <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <div class="me-3"> {# Error details on the left #}
+                <h1 class="display-6 fst-italic mb-2">{{ error_entry.title }}</h1>
+                {% if error_entry.error_code %}
+                    <p class="lead my-1">Error Code: <code class="user-select-all">{{ error_entry.error_code }}</code></p>
+                {% endif %}
+                {% if error_entry.category %}
+                    <p class="lead mb-1">
+                        Category: <a href="{{ error_entry.category.get_absolute_url }}" class="text-body-emphasis fw-bold">{{ error_entry.category.name }}</a>
+                    </p>
+                {% endif %}
+                <p class="text-muted-glass small mt-2">
+                    Last updated: {{ error_entry.updated_at|timesince }} ago
+                    {% if error_entry.author %}
+                        | By: <strong class="author-name">{{ error_entry.author.username }}</strong>
+                    {% else %}
+                        | By: System/Admin
+                    {% endif %}
+                </p>
+            </div>
+
+            {# Bookmark Button on the right #}
+            {% if user.is_authenticated %}
+                <div class="mt-1 ms-auto ms-md-3 text-md-end" style="flex-shrink: 0;">
+                    {% if is_bookmarked %}
+                        <a href="{% url 'main_app:remove_bookmark' error_slug=error_entry.slug %}" class="btn btn-sm glass-button-danger" title="Remove Bookmark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill me-1" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                            </svg> Unbookmark
+                        </a>
+                    {% else %}
+                        <a href="{% url 'main_app:add_bookmark' error_slug=error_entry.slug %}" class="btn btn-sm glass-button-success" title="Add Bookmark">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark me-1" viewBox="0 0 16 16">
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                            </svg> Bookmark
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Status Indicator for non-public/non-approved errors, if user has permission to see this status #}
+        {% if not error_entry.is_public or error_entry.status != error_entry.STATUS_APPROVED %}
+            {% if request.user == error_entry.author or request.user.is_staff %}
+                <div class="alert
+                    {% if error_entry.status == error_entry.STATUS_PENDING %}alert-warning glass-alert-pending{% endif %}
+                    {% if error_entry.status == error_entry.STATUS_REJECTED %}alert-danger glass-alert-rejected{% endif %}
+                    {% if error_entry.status == error_entry.STATUS_APPROVED and not error_entry.is_public %}alert-info glass-alert-not-public{% endif %}
+                    p-2 mt-3 small" role="alert">
+                    <strong>Status:</strong> {{ error_entry.get_status_display }}.
+                    {% if not error_entry.is_public %} This entry is not currently public.{% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {# Check if the content should be displayed based on can_view_fully passed from the view #}
+    {# This flag is true if error is public & approved OR if user is author/staff #}
+    {# If not can_view_fully, the view should have raised Http404, so this check might be redundant here #}
+    {# but kept for clarity if you adjust view logic later #}
+
+    <div class="card shadow-sm mb-4 glass-card-effect">
+        <div class="card-header bg-glass-header">
+            <h4>Description</h4>
+        </div>
+        <div class="card-body">
+            {{ error_entry.description|linebreaksbr }}
+        </div>
+    </div>
+
+    {% if error_entry.cause_overview %}
+    <div class="card shadow-sm mb-4 glass-card-effect">
+        <div class="card-header bg-glass-header">
+            <h4>Common Causes</h4>
+        </div>
+        <div class="card-body">
+            {{ error_entry.cause_overview|linebreaksbr }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if error_entry.solution_overview %}
+    <div class="card shadow-sm mb-4 glass-card-effect">
+        <div class="card-header bg-glass-header">
+            <h4>Solution Overview / Steps</h4>
+        </div>
+        <div class="card-body">
+            {{ error_entry.solution_overview|linebreaksbr }}
+        </div>
+    </div>
+    {% endif %}
+</article>
+
+{# --- Comment Section --- #}
+<section id="comments" class="mt-5">
+    <h3 class="mb-3 section-title-glass">Comments ({{ comments.count }})</h3>
+
+    {% if error_entry.is_public and error_entry.status == error_entry.STATUS_APPROVED %}
+        {% if user.is_authenticated %}
+        <div class="card shadow-sm mb-4 glass-card-effect">
+            <div class="card-body">
+                <h5 class="card-title comment-form-title">Leave a Comment</h5>
+                <form method="post"> {# Action defaults to current page URL #}
+                    {% csrf_token %}
+                    {{ comment_form.body }}
+                    <button type="submit" class="btn btn-primary btn-sm mt-2 glass-button">Post Comment</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info glass-alert" role="alert">
+            Please <a href="{% url 'login' %}?next={{ request.path }}" class="alert-link">log in</a> to post a comment.
+        </div>
+        {% endif %}
+    {% elif request.user == error_entry.author or request.user.is_staff %}
+         {# Message for author/staff if comments are disabled due to status #}
+         <div class="alert alert-secondary glass-alert small" role="alert">Comments are currently disabled for this entry as it is not approved and public.</div>
+    {% endif %}
+
+    {# Display existing comments #}
+    {% if comments %}
+        {% for comment in comments %}
+        <div class="card shadow-sm mb-3 glass-card-effect comment-card">
+            <div class="card-body">
+                <p class="card-text comment-body">{{ comment.body|linebreaksbr }}</p>
+                <small class="text-muted-glass comment-author-meta">
+                    By: <strong class="author-name">{{ comment.author.username }}</strong>
+                    on {{ comment.created_at|date:"M d, Y, P" }}
+                </small>
+            </div>
+        </div>
+        {% endfor %}
+    {% elif error_entry.is_public and error_entry.status == error_entry.STATUS_APPROVED %}
+        {# Only show "no comments yet" if comments are generally allowed for this entry #}
+        <p class="text-muted-glass">No comments yet. Be the first to comment!</p>
+    {% endif %}
+</section>
+{# --- End Comment Section --- #}
+
+
+{% if related_errors %}
+<div class="mt-5">
+    <h3 class="mb-3 section-title-glass">Related Errors in "{{ error_entry.category.name }}"</h3>
+    <div class="list-group shadow-sm">
+        {% for related_error in related_errors %}
+            <a href="{{ related_error.get_absolute_url }}" class="list-group-item list-group-item-action glass-list-item">
+                {{ related_error.title }}
+                {% if related_error.error_code %}<small class="text-muted-glass ms-2">({{ related_error.error_code }})</small>{% endif %}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<hr class="my-4 hr-glass">
+<a href="{% url 'main_app:error_list' %}" class="btn btn-outline-secondary glass-button">&laquo; Back to All Errors</a>
+{% if error_entry.category %}
+    <a href="{{ error_entry.category.get_absolute_url }}" class="btn btn-outline-primary glass-button ms-2">&laquo; Back to {{error_entry.category.name}}</a>
+{% endif %}
+
+{% endblock content %}

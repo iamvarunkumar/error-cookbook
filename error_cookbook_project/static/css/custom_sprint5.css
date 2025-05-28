@@ -1,0 +1,130 @@
+.form-label {
+    font-weight: 500;
+    color: var(--glass-text-color);
+    margin-bottom: 0.3rem;
+}
+
+.form-select.glass-form-input { /* For the category dropdown */
+    background: rgba(255, 255, 255, 0.08) !important; /* Override Bootstrap dark theme select */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border-color) !important;
+    color: var(--glass-text-color) !important;
+    border-radius: 0.375rem;
+    padding-right: 2.5rem; /* Ensure space for Bootstrap's dropdown arrow */
+    /* Ensure the dropdown arrow is visible against the dark background */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e0e0e0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+}
+
+.form-select.glass-form-input:focus {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #fff !important;
+    box-shadow: 0 0 12px var(--primary-glow-color) !important;
+    outline: 0;
+}
+
+.form-text.text-muted-glass {
+    font-size: 0.85em;
+    color: var(--glass-text-muted-color) !important;
+}
+
+.invalid-feedback.d-block span {
+    color: #f48fb1; /* Softer pink for errors */
+    font-size: 0.875em;
+}
+
+.btn-lg.glass-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* General UI Polish */
+/* Example: slightly more pronounced hover on sidebar category links */
+.sidebar-area .list-group-item-action.glass-list-item:hover {
+    background-color: var(--glass-bg-lighter) !important; /* from :root */
+    transform: translateX(3px); /* Subtle shift */
+    box-shadow: 0 5px 15px var(--primary-glow-color);
+}
+
+/* In your custom CSS file */
+
+/* ... other existing CSS ... */
+
+body {
+    /* Adjust background to be something noticeable if the effect layer is translucent */
+    background: linear-gradient(145deg, var(--body-bg-start) 0%, var(--body-bg-mid) 45%, var(--body-bg-end) 100%);
+    background-attachment: fixed;
+    color: var(--glass-text-color);
+    padding-top: var(--navbar-height); /* Keep this for navbar spacing */
+    display: flex; /* Enable flexbox on body */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Ensure body takes at least the full viewport height */
+    background-color: limegreen !important; /* Makes it VERY obvious if CSS is loaded */
+    border: 10px solid orange !important;
+    padding-top: 70px !important;
+
+}
+
+.effect-layer {
+    flex-grow: 1; /* Allow this to take up remaining vertical space */
+    display: flex; /* Center its content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent black overlay */
+    backdrop-filter: blur(10px); /* Apply blur to what's behind */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    position: fixed; /* Take it out of normal flow */
+    top: var(--navbar-height); /* Position below the fixed navbar */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Place it behind the actual content (adjust if needed) */
+}
+
+.main-content-area {
+    background: rgba(30, 30, 50, 0.8); /* Glassy background for the content area */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    color: var(--glass-text-color);
+    max-width: 90%; /* Adjust as needed */
+    width: 800px; /* Example fixed width */
+    margin: 2rem; /* Add some margin around the centered content */
+    position: relative; /* Needed if you have absolute/fixed children within */
+    z-index: 10; /* Ensure content is above the effect layer */
+}
+
+/* Adjust sidebar and main column within the centered area if necessary */
+.main-content-area .row {
+    /* You might need to adjust flex direction or alignment here depending on your layout */
+    display: flex;
+    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+    margin-left: -15px; /* Bootstrap default */
+    margin-right: -15px; /* Bootstrap default */
+}
+
+.main-content-area .sidebar-area {
+    /* Styles for sidebar within the centered content */
+}
+
+.main-content-area .content-column {
+    /* Styles for main content column within the centered content */
+}
+
+/* Ensure messages are also styled appropriately within the centered area */
+.glass-alert {
+    /* ... your existing glass alert styles ... */
+}
+
+
+h1 {
+    color: yellow !important;
+    border: 2px dashed blue !important;
+}
+
+.navbar {
+    border-bottom: 5px solid red !important;
+}

@@ -1,0 +1,20 @@
+{% comment %} cookbook/templates/cookbook/partials/category_sidebar.html {% endcomment %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h4>Categories</h4>
+    </div>
+    <div class="list-group list-group-flush">
+        <a href="{% url 'main_app:error_list' %}"
+           class="list-group-item list-group-item-action {% if not current_category and request.resolver_match.url_name == 'error_list' %}active{% endif %}">
+           All Errors
+        </a>
+        {% for cat in categories %} {# Assuming 'categories' is passed in context #}
+            <a href="{{ cat.get_absolute_url }}"
+               class="list-group-item list-group-item-action {% if current_category.slug == cat.slug %}active{% endif %}">
+                {{ cat.name }} ({{ cat.errors.count }})
+            </a>
+        {% empty %}
+            <li class="list-group-item">No categories yet.</li>
+        {% endfor %}
+    </div>
+</div>

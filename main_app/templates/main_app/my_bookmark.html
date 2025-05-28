@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ list_title|default:"My Bookmarks" }} - Error Cookbook{% endblock title %}
+
+{% block content %}
+<h1 class="mb-4">{{ list_title|default:"My Bookmarked Errors" }}</h1>
+
+{% if bookmarked_errors %}
+    <div class="list-group shadow-sm">
+        {% for error in bookmarked_errors %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start glass-list-item mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <a href="{{ error.get_absolute_url }}" class="text-decoration-none">
+                        <h5 class="mb-1 text-light">{{ error.title }}</h5>
+                    </a>
+                    <a href="{% url 'main_app:remove_bookmark' error_slug=error.slug %}" class="btn btn-sm glass-button-danger" title="Remove Bookmark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-bookmark-x-fill" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zM6.854 5.146a.5.5 0 1 0-.708.708L7.293 7 6.146 8.146a.5.5 0 1 0 .708.708L8 7.707l1.146 1.147a.5.5 0 1 0 .708-.708L8.707 7l1.147-1.146a.5.5 0 0 0-.708-.708L8 6.293 6.854 5.146z"/>
+                        </svg>
+                    </a>
+                </div>
+                {% if error.error_code %}
+                    <p class="mb-1"><small class="text-muted-glass">Code: {{ error.error_code }}</small></p>
+                {% endif %}
+                <p class="mb-1 text-muted-glass">{{ error.description|truncatewords:25 }}</p>
+                {% if error.category %}
+                    <span class="badge bg-primary-glass rounded-pill">{{ error.category.name }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info glass-alert" role="alert">
+        You haven't bookmarked any errors yet. You can bookmark errors from their detail pages.
+        <br>
+        <a href="{% url 'main_app:error_list' %}" class="alert-link">Browse errors to find some to bookmark!</a>
+    </div>
+{% endif %}
+{% endblock content %}

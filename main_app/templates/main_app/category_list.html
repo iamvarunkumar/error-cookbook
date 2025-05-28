@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}All Categories - Error Cookbook{% endblock title %}
+
+{% block content %}
+<h1 class="mb-4">All Categories</h1>
+
+{% if categories %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for category in categories %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        {% if category.description %}
+                            <p class="card-text flex-grow-1">{{ category.description|truncatewords:20 }}</p>
+                        {% else %}
+                            <p class="card-text flex-grow-1 fst-italic text-muted">No description available.</p>
+                        {% endif %}
+                         <p class="card-text"><small class="text-muted">{{ category.errors.count }} error{{ category.errors.count|pluralize }}</small></p>
+                        <a href="{{ category.get_absolute_url }}" class="btn btn-outline-primary mt-auto">View Errors in {{ category.name }}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        No categories have been added yet.
+    </div>
+{% endif %}
+{% endblock content %}

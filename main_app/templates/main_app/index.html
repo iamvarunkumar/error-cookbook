@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Welcome - Error Cookbook{% endblock title %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock sidebar %}
+
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary shadow-sm">
+    <div class="col-lg-8 px-0">
+        <h1 class="display-4 fst-italic">Welcome to the Error Cookbook!</h1>
+        <p class="lead my-3">Your one-stop resource for understanding and solving technical errors. Browse by category, search for specific codes, and learn from detailed explanations.</p>
+        <p class="lead mb-0"><a href="{% url 'main_app:error_list' %}" class="text-body-emphasis fw-bold">Start Browse errors...</a></p>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">Explore Categories</strong>
+          <h3 class="mb-0">Organized Knowledge</h3>
+          <p class="card-text mb-auto">Navigate through errors neatly grouped by technology or type.</p>
+          <a href="{% url 'main_app:category_list' %}" class="icon-link gap-1 icon-link-hover stretched-link">
+            View all categories
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-success-emphasis">Quick Search</strong>
+          <h3 class="mb-0">Find Solutions Fast</h3>
+          <p class="mb-auto">Use our search to quickly find the error you're facing.</p>
+          <a href="#search-form-in-nav" class="icon-link gap-1 icon-link-hover stretched-link" onclick="document.querySelector('.navbar .form-control[type=\'search\']').focus(); return false;">
+            Try searching now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Recently Updated Errors</h2>
+        {% if recent_errors %}
+            <div class="list-group shadow-sm">
+            {% for error in recent_errors %}
+                 <a href="{{ error.get_absolute_url }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ error.title }}</h5>
+                        <small class="text-muted">{{ error.updated_at|timesince }} ago</small>
+                    </div>
+                    {% if error.category %}<span class="badge bg-secondary rounded-pill">{{ error.category.name }}</span>{% endif %}
+                </a>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>No errors added yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

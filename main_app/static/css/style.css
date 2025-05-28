@@ -1,0 +1,298 @@
+/* static/css/main_style.css */
+/* Consolidated styles for a clean, sleek UI up to Sprint 5 functionality */
+
+:root {
+    --primary-glow-color: rgba(100, 181, 246, 0.4);
+    --secondary-glow-color: rgba(126, 87, 194, 0.4);
+    --success-glow-color: rgba(76, 175, 80, 0.5);
+    --danger-glow-color: rgba(244, 67, 54, 0.5);
+
+    --glass-bg-main-card: rgba(35, 35, 55, 0.75);      /* Main content card background */
+    --glass-bg-nested-card: rgba(45, 50, 75, 0.70);  /* For cards inside the main card */
+    --glass-bg-navbar-footer: rgba(20, 25, 45, 0.8); /* Navbar and footer */
+    --glass-bg-hover: rgba(60, 65, 90, 0.80);
+
+    --glass-border-color: rgba(255, 255, 255, 0.12);
+    --glass-border-color-stronger: rgba(255, 255, 255, 0.2);
+
+    --glass-text-color: #e8eaf6;
+    --glass-text-muted-color: #b0bec5;
+    --glass-text-emphasis-color: #ffffff;
+
+    --body-bg-start: #0d1b2a;
+    --body-bg-mid: #1b263b;
+    --body-bg-end: #2a3b47;
+
+    --navbar-height: 65px; /* IMPORTANT: Measure your actual navbar height! */
+    --footer-height: 60px;
+
+    --link-color: #82b1ff;
+    --link-hover-color: #a6cfff;
+
+    --box-shadow-soft: 0 4px 15px rgba(0,0,0,0.2);
+    --box-shadow-strong: 0 8px 30px rgba(0,0,0,0.3);
+
+    --badge-primary-glass-bg: rgba(100, 181, 246, 0.2);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+[data-bs-theme="dark"] {
+    --bs-body-color: var(--glass-text-color);
+    --bs-body-bg: transparent;
+    --bs-border-color: var(--glass-border-color);
+    --bs-border-color-translucent: rgba(255, 255, 255, 0.08);
+    --bs-link-color: var(--link-color);
+    --bs-link-hover-color: var(--link-hover-color);
+    --bs-code-color: #f48fb1;
+    --bs-emphasis-color: var(--glass-text-emphasis-color);
+    --bs-secondary-color: var(--glass-text-muted-color);
+    --bs-tertiary-color: rgba(232, 234, 246, 0.4);
+    --bs-primary-rgb: 100, 181, 246;
+    --bs-success-rgb: 76, 175, 80;
+    --bs-info-rgb: 13, 202, 240;
+    --bs-warning-rgb: 255, 193, 7;
+    --bs-danger-rgb: 244, 67, 54;
+    --bs-card-bg: var(--glass-bg-nested-card);
+    --bs-card-border-color: var(--glass-border-color);
+    --bs-card-cap-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(145deg, var(--body-bg-start) 0%, var(--body-bg-mid) 45%, var(--body-bg-end) 100%);
+    background-attachment: fixed;
+    color: var(--glass-text-color);
+    padding-top: var(--navbar-height);
+    /* min-height: 100vh; already on .d-flex .flex-column from Bootstrap */
+}
+
+/* This class is on the <div class="container main-content-area"> in base.html */
+/* It provides spacing below the navbar for a standard layout */
+.main-content-area {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    flex-grow: 1; /* Ensures it pushes footer down */
+}
+
+/* Navbar */
+.glass-navbar {
+    background: var(--glass-bg-navbar-footer);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--glass-border-color);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.35);
+    min-height: var(--navbar-height);
+}
+.navbar-brand { font-weight: 600; letter-spacing: 0.5px; }
+.navbar .nav-link { transition: color 0.2s ease, text-shadow 0.2s ease; font-weight: 400; }
+.navbar .nav-link.active, .navbar .nav-link:hover, .navbar .nav-link:focus {
+    color: var(--glass-text-emphasis-color) !important;
+    text-shadow: 0 0 8px var(--primary-glow-color);
+}
+.search-input-navbar { min-width: 200px; }
+@media (min-width: 992px) { .search-input-navbar { min-width: 280px; } }
+
+/* Dropdown Menu Glass */
+.dropdown-menu.glass-dropdown {
+    background: var(--glass-bg-main-card) !important; /* Darker than navbar */
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    border: 1px solid var(--glass-border-color) !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    margin-top: 0.5rem !important;
+    padding: 0.25rem 0;
+}
+.glass-dropdown .dropdown-item { color: var(--glass-text-color) !important; transition: background-color 0.2s ease, color 0.2s ease; padding: 0.5rem 1rem;}
+.glass-dropdown .dropdown-item:hover, .glass-dropdown .dropdown-item:focus, .glass-dropdown .dropdown-item.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--glass-text-emphasis-color) !important;
+}
+.hr-glass.dropdown-divider { border-top: 1px solid var(--glass-border-color) !important; margin: 0.25rem 0; }
+
+
+/* General Glass Effect for Cards and Elements (sidebar, error list items, etc.) */
+.glass-card-effect, .glass-alert, .glass-list-item {
+    background: var(--glass-bg-nested-card); /* Using nested card BG for these */
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid var(--glass-border-color);
+    border-radius: 0.75rem;
+    color: var(--glass-text-color);
+    box-shadow: var(--box-shadow-soft);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.glass-card-effect:hover, .glass-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow-color);
+}
+
+.list-group.shadow-sm .list-group-item-action.glass-list-item {
+    background-color: transparent; /* Make it inherit from parent if wrapped in glass-card-effect */
+    border: 1px solid var(--glass-border-color);
+    color: var(--glass-text-color);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem; padding: 0.75rem 1rem;
+}
+.list-group.shadow-sm .list-group-item-action.glass-list-item:last-child { margin-bottom: 0; }
+.list-group.shadow-sm .list-group-item-action.glass-list-item:hover,
+.list-group.shadow-sm .list-group-item-action.glass-list-item:focus {
+    background-color: var(--glass-bg-hover);
+    color: var(--glass-text-emphasis-color);
+    border-color: var(--glass-border-color-stronger);
+}
+.list-group-item.active { /* Sidebar active state */
+    background-color: var(--bs-primary) !important; border-color: var(--bs-primary) !important;
+    color: var(--bs-emphasis-color) !important; box-shadow: 0 0 15px var(--primary-glow-color);
+}
+
+.card.glass-card-effect .card-header, .bg-glass-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--glass-border-color);
+    color: var(--glass-text-emphasis-color); font-weight: 500; padding: 0.75rem 1.25rem;
+}
+.list-item-title-glass { color: var(--glass-text-emphasis-color); }
+
+
+/* Muted text on glass elements */
+.text-muted-glass { color: var(--glass-text-muted-color) !important; }
+
+/* Hero section (index.html) */
+.hero-section { padding: 2rem 1rem; } /* Applies to the p-4 on index.html */
+.hero-section.bg-body-secondary { /* If using Bootstrap's bg class */
+     background-color: var(--glass-bg-nested-card) !important; /* Make it glassy */
+     border-radius: 0.75rem; /* Match other glass cards */
+}
+.hero-section .brand-highlight { color: var(--link-hover-color); text-shadow: 0 0 10px var(--primary-glow-color); }
+
+/* Buttons with Glass Effect */
+.glass-button, .btn.glass-button-success, .btn.glass-button-danger {
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border-color-stronger); color: var(--glass-text-color);
+    transition: all 0.2s ease; font-weight: 500; padding: 0.4rem 0.9rem;
+    font-size: 0.9rem; border-radius: 0.375rem; text-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+.glass-button:hover, .btn.glass-button-success:hover, .btn.glass-button-danger:hover {
+    background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.35);
+    color: var(--glass-text-emphasis-color); transform: translateY(-2px);
+}
+.navbar .btn.glass-button.btn-outline-success { color: #20c997; border-color: #20c997; background: rgba(32, 201, 151, 0.1); }
+.navbar .btn.glass-button.btn-outline-success:hover { color: #fff; background: #20c997; border-color: #20c997; box-shadow: 0 0 10px rgba(32, 201, 151, 0.5); }
+.btn.glass-button-success { box-shadow: 0 0 8px var(--success-glow-color); }
+.btn.glass-button-success:hover { box-shadow: 0 0 12px var(--success-glow-color), 0 0 20px var(--success-glow-color); }
+.btn.glass-button-danger { box-shadow: 0 0 8px var(--danger-glow-color); }
+.btn.glass-button-danger:hover { box-shadow: 0 0 12px var(--danger-glow-color), 0 0 20px var(--danger-glow-color); }
+.btn-lg.glass-button { padding: 0.75rem 1.5rem; font-size: 1.1rem; }
+
+
+/* Form Inputs on Glass */
+.glass-form-input, .form-control.glass-form-input, .form-select.glass-form-input {
+    background: rgba(255, 255, 255, 0.08) !important; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border-color) !important; color: var(--glass-text-color) !important;
+    border-radius: 0.375rem; transition: all 0.2s ease;
+}
+.glass-form-input::placeholder { color: rgba(232, 234, 246, 0.5); }
+.glass-form-input:focus, .form-select.glass-form-input:focus {
+    background: rgba(255, 255, 255, 0.12) !important; border-color: var(--glass-border-color-stronger) !important;
+    color: var(--glass-text-emphasis-color) !important; box-shadow: 0 0 12px var(--primary-glow-color) !important; outline: 0;
+}
+.form-select.glass-form-input { padding-right: 2.5rem; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(224, 224, 224, 0.7)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important; }
+.form-label { font-weight: 500; color: var(--glass-text-color); margin-bottom: 0.3rem; }
+.form-text.text-muted-glass { font-size: 0.85em; color: var(--glass-text-muted-color) !important; }
+.invalid-feedback.d-block span { color: #f48fb1; font-size: 0.875em; }
+
+
+/* Alerts on Glass */
+.glass-alert { backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); border: 1px solid var(--glass-border-color); color: var(--glass-text-color); }
+.glass-alert.alert-info { background: rgba(var(--bs-info-rgb), 0.25) !important; border-color: rgba(var(--bs-info-rgb), 0.4) !important; color: var(--bs-info-text-emphasis) !important;}
+.glass-alert.alert-success { background: rgba(var(--bs-success-rgb), 0.25) !important; border-color: rgba(var(--bs-success-rgb), 0.4) !important; color: var(--bs-success-text-emphasis) !important;}
+.glass-alert.alert-warning { background: rgba(var(--bs-warning-rgb), 0.25) !important; border-color: rgba(var(--bs-warning-rgb), 0.4) !important; color: var(--bs-warning-text-emphasis) !important;}
+.glass-alert.alert-danger { background: rgba(var(--bs-danger-rgb), 0.25) !important; border-color: rgba(var(--bs-danger-rgb), 0.4) !important; color: var(--bs-danger-text-emphasis) !important;}
+.glass-alert .alert-link { color: var(--link-hover-color); font-weight: bold; }
+
+/* Comment Section */
+.section-title-glass { color: var(--glass-text-emphasis-color); padding-bottom: 0.5rem; border-bottom: 1px solid var(--glass-border-color); margin-bottom: 1.5rem !important; text-shadow: 0 0 5px rgba(0,0,0,0.2); }
+.comment-card { /* Uses .glass-card-effect or .glass-card-effect-nested */ }
+.comment-form-title { color: var(--glass-text-emphasis-color); }
+.comment-body { font-size: 0.95rem; line-height: 1.6; }
+.comment-author-meta .author-name { color: var(--glass-text-emphasis-color); font-weight: 500; }
+
+/* Horizontal Rule */
+.hr-glass { border-top: 1px solid var(--glass-border-color); opacity: 0.5; }
+
+/* Badges */
+.badge.bg-primary-glass { background-color: var(--badge-primary-glass-bg) !important; border: 1px solid rgba(var(--bs-primary-rgb), 0.4); color: #cde6ff; padding: 0.4em 0.65em; font-weight: 500; }
+
+/* Footer */
+.footer-glass { background: var(--glass-bg-navbar-footer); backdrop-filter: blur(15px) saturate(150%); -webkit-backdrop-filter: blur(15px) saturate(150%); border-top: 1px solid var(--glass-border-color); color: var(--glass-text-muted-color); font-size: 0.9rem; }
+.footer-glass p { margin-bottom: 0; }
+
+/* Accessibility Focus */
+a:focus-visible, [role="button"]:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--primary-glow-color) !important; outline-offset: 1px !important;
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25) !important;
+}
+
+/* Code blocks styling */
+code { padding: .2em .4em; margin: 0; font-size: .875em; background-color: rgba(var(--bs-emphasis-color-rgb), .1); border-radius: .25rem; }
+pre { display: block; padding: 1rem; margin: 1rem 0; overflow: auto; font-size: .875em;
+      background-color: rgba(0,0,0,0.3) !important; border: 1px solid var(--glass-border-color);
+      border-radius: 8px; color: var(--glass-text-color); }
+pre code { background-color: transparent; padding: 0; font-size: inherit; }
+
+/* Sidebar specific styling */
+.sidebar-area .glass-card-effect { /* The card that wraps the category list */
+    padding: 1rem;
+}
+.sidebar-area .list-group-item { font-size: 0.9rem; }
+
+.glass-alert-pending { /* Bootstrap alert-warning base */
+    background: rgba(var(--bs-warning-rgb), 0.25) !important;
+    border-color: rgba(var(--bs-warning-rgb), 0.4) !important;
+    color: var(--bs-warning-text-emphasis) !important; /* Ensure text is visible */
+}
+.glass-alert-rejected { /* Bootstrap alert-danger base */
+    background: rgba(var(--bs-danger-rgb), 0.25) !important;
+    border-color: rgba(var(--bs-danger-rgb), 0.4) !important;
+    color: var(--bs-danger-text-emphasis) !important;
+}
+.glass-alert-not-public { /* Bootstrap alert-info base */
+    background: rgba(var(--bs-info-rgb), 0.25) !important;
+    border-color: rgba(var(--bs-info-rgb), 0.4) !important;
+    color: var(--bs-info-text-emphasis) !important;
+}
+
+/* Status badges on my_submissions.html */
+.badge.bg-success-glass {
+    background-color: rgba(var(--bs-success-rgb), 0.25) !important;
+    border: 1px solid rgba(var(--bs-success-rgb), 0.4);
+    color: var(--bs-success-text-emphasis); /* Use Bootstrap's themed text color */
+    padding: 0.4em 0.65em; font-weight: 500;
+}
+.badge.bg-info-glass {
+    background-color: rgba(var(--bs-info-rgb), 0.25) !important;
+    border: 1px solid rgba(var(--bs-info-rgb), 0.4);
+    color: var(--bs-info-text-emphasis);
+    padding: 0.4em 0.65em; font-weight: 500;
+}
+.badge.bg-warning-glass { /* text-dark might be needed if warning is too light */
+    background-color: rgba(var(--bs-warning-rgb), 0.25) !important;
+    border: 1px solid rgba(var(--bs-warning-rgb), 0.4);
+    color: var(--bs-warning-text-emphasis);
+    padding: 0.4em 0.65em; font-weight: 500;
+}
+.badge.bg-danger-glass {
+    background-color: rgba(var(--bs-danger-rgb), 0.25) !important;
+    border: 1px solid rgba(var(--bs-danger-rgb), 0.4);
+    color: var(--bs-danger-text-emphasis);
+    padding: 0.4em 0.65em; font-weight: 500;
+}
+
+/* General Polish */
+.author-name { /* Class used in error_detail and comment author */
+    font-weight: 600; /* Make author names slightly more prominent */
+    color: var(--glass-text-emphasis-color);
+}
